@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "YOUR MEDICIN"
+description = "A private browser-based prescription reader that uses open-source OCR to extract medicine names from uploaded prescription images and flags uncertain results for manual review."
+version = "1.0.0"
+id = "artifacts/your-medicin"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22380
+
+[services.development]
+run = "pnpm --filter @workspace/your-medicin run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/your-medicin", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/your-medicin/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22380"
+BASE_PATH = "/"
